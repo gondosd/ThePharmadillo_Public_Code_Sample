@@ -1,0 +1,91 @@
+﻿// Gondos Daniel all rights reserved.
+
+
+#include "Widgets/Options/ListEntries/Widget_ListEntry_Scalar.h"
+
+#include "AnalogSlider.h"
+#include "Widgets/Options/DataObjects/ListDataObject_Scalar.h"
+
+void UWidget_ListEntry_Scalar::NativeOnInitialized()
+{
+	Super::NativeOnInitialized();
+	AnalogSlider_SettingSlider->OnValueChanged.AddUniqueDynamic(this, &ThisClass::OnSliderValueChanged);
+	AnalogSlider_SettingSlider->OnMouseCaptureBegin.AddUniqueDynamic(this, &ThisClass::OnSliderMouseCaptureBegin);
+}
+
+FReply UWidget_ListEntry_Scalar::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
+{
+	if (GetIsInteractable())
+	{
+		if (InKeyEvent.GetKey() == FKey("Right"))
+		{
+			float Value = FMath::Clamp(
+				AnalogSlider_SettingSlider->GetValue() + AnalogSlider_SettingSlider->GetStepSize(),
+				AnalogSlider_SettingSlider->GetMinValue(), AnalogSlider_SettingSlider->GetMaxValue());
+
+			AnalogSlider_SettingSlider->OnValueChanged.Broadcast(Value);
+		}
+
+		if (InKeyEvent.GetKey() == FKey("Left"))
+		{
+			float Value = FMath::Clamp(
+				AnalogSlider_SettingSlider->GetValue() - AnalogSlider_SettingSlider->GetStepSize(),
+				AnalogSlider_SettingSlider->GetMinValue(), AnalogSlider_SettingSlider->GetMaxValue());
+
+			AnalogSlider_SettingSlider->OnValueChanged.Broadcast(Value);
+
+			return FReply::Handled();
+		}
+	}
+	return Super::NativeOnKeyDown(InGeometry, InKeyEvent);
+}
+
+void UWidget_ListEntry_Scalar::OnOwningListDataObjectSet(UListDataObject_Base* InOwningListDataObject)
+{
+	Super::OnOwningListDataObjectSet(InOwningListDataObject);
+	CachedOwningScalarDataObject = CastChecked<UListDataObject_Scalar>(InOwningListDataObject);
+
+	CommonNumeric_SettingValue->SetNumericType(CachedOwningScalarDataObject->GetDisplayNumericType());
+	CommonNumeric_SettingValue->FormattingSpecification = CachedOwningScalarDataObject->GetNumberFormattingOptions();
+	CommonNumeric_SettingValue->SetCurrentValue(CachedOwningScalarDataObject->GetCurrentValue());
+
+	AnalogSlider_SettingSlider->SetMinValue(CachedOwningScalarDataObject->GetDisplayValueRange().GetLowerBoundValue());
+	AnalogSlider_SettingSlider->SetMaxValue(CachedOwningScalarDataObject->GetDisplayValueRange().GetUpperBoundValue());
+	AnalogSlider_SettingSlider->SetStepSize(CachedOwningScalarDataObject->GetSliderStepSize());
+	AnalogSlider_SettingSlider->SetValue(CachedOwningScalarDataObject->GetCurrentValue());
+}
+
+void UWidget_ListEntry_Scalar::OnOwningListDataObjectModified(UListDataObject_Base* OwningModifiedData, EOptionsListDataModifiedReason ModifiedReason)
+{
+	Super::OnOwningListDataObjectModified(OwningModifiedData, ModifiedReason);
+
+	if (CachedOwningScalarDataObject)
+	{
+		CommonNumeric_SettingValue->SetCurrentValue(CachedOwningScalarDataObject->GetCurrentValue());
+		AnalogSlider_SettingSlider->SetValue(CachedOwningScalarDataObject->GetCurrentValue());
+	}
+}
+
+void UWidget_ListEntry_Scalar::OnToggleEditableState(bool bIsEditable)
+{
+	Super::OnToggleEditableState(bIsEditable);
+	
+	AnalogSlider_SettingSlider->SetIsEnabled(bIsEditable);
+	CommonNumeric_SettingValue->SetIsEnabled(bIsEditable);
+}
+
+void UWidget_ListEntry_Scalar::OnSliderValueChanged(float Value)
+{
+	if (CachedOwningScalarDataObject && GetIsInteractable())
+	{
+		CachedOwningScalarDataObject->SetCurrentValueFromSlider(Value);
+	}
+}
+
+void UWidget_ListEntry_Scalar::OnSliderMouseCaptureBegin()
+{
+	if (GetIsInteractable())
+	{
+		SelectThisEntryWidget();
+	}
+}
