@@ -21,6 +21,5 @@ _This is just a snapshot about the current state and probably I wont update it a
 - Plugins
 - Any Assets
 
-to try the project please go to this site:
-https://gondosd.itch.io/the-pharmadillo
-(Currently only the menu is playable there, but I might change this in the near future) 
+to try the project please go to this [itch.io](https://gondosd.itch.io/the-pharmadillo) page. 
+_(Currently only the menu is playable there, but I might change this in the near future)_
