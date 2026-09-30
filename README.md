@@ -1,6 +1,6 @@
 ![The Pharmadillo](https://img.itch.zone/aW1nLzI2OTU1ODAzLnBuZw==/original/Zqp%2Fyq.png)
 
-# 💊 The Pharmadillo's source-code 🦔
+# ⚕ The Pharmadillo's source-code 🦔
 This is my personal projects source so I can show for recruiters how I work with C++
 
 _This is just a snapshot about the current state and probably I wont update it as I progress with the development_
