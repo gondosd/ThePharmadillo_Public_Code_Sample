@@ -1,3 +1,5 @@
+![The Pharmadillo](https://img.itch.zone/aW1nLzI2OTU1ODAzLnBuZw==/original/Zqp%2Fyq.png)
+
 # 💊 The Pharmadillo's source-code 🦔
 This is my personal projects source so I can show for recruiters how I work with C++
 
@@ -21,5 +23,8 @@ _This is just a snapshot about the current state and probably I wont update it a
 - Plugins
 - Any Assets
 
-to try the project please go to this [itch.io](https://gondosd.itch.io/the-pharmadillo) page. 
+To try the project please go to this [itch.io](https://gondosd.itch.io/the-pharmadillo) page. 
+
 _(Currently only the menu is playable there, but I might change this in the near future)_
+
+Or follow the in-game contents on [Artstation](https://www.artstation.com/artwork/QKOBm3)
